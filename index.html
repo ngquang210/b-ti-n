@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tool Bắt Cầu Tài Xỉu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      width: 80%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #d35400;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Tool Bắt Cầu Tài Xỉu</h1>
+  <input type="text" id="inputSequence" placeholder="Nhập chuỗi t và x (ví dụ: txtxtt)">
+  <br>
+  <button onclick="analyze()">Phân Tích</button>
+
+  <div id="result" class="result"></div>
+</div>
+
+<script>
+function analyze() {
+  const input = document.getElementById('inputSequence').value.toLowerCase();
+  const validInput = input.split('').filter(c => c === 't' || c === 'x');
+
+  if (validInput.length === 0) {
+    document.getElementById('result').innerHTML = "<p>Vui lòng nhập ít nhất 1 ký tự 't' hoặc 'x'.</p>";
+    return;
+  }
+
+  const countT = validInput.filter(c => c === 't').length;
+  const countX = validInput.filter(c => c === 'x').length;
+  const total = countT + countX;
+
+  const percentT = ((countT / total) * 100).toFixed(2);
+  const percentX = ((countX / total) * 100).toFixed(2);
+
+  let prediction = '';
+  if (percentT > percentX) {
+    prediction = '<span class="highlight">Dự đoán: TÀI dễ ra hơn!</span>';
+  } else if (percentX > percentT) {
+    prediction = '<span class="highlight">Dự đoán: XỈU dễ ra hơn!</span>';
+  } else {
+    prediction = '<span class="highlight">Dự đoán: CÂN BẰNG!</span>';
+  }
+
+  document.getElementById('result').innerHTML = `
+    <p>Số lần Tài (t): ${countT}</p>
+    <p>Số lần Xỉu (x): ${countX}</p>
+    <p>Xác suất Tài: ${percentT}%</p>
+    <p>Xác suất Xỉu: ${percentX}%</p>
+    <p>${prediction}</p>
+  `;
+}
+</script>
+
+</body>
+</html>
